@@ -209,6 +209,8 @@
 "Use window title in saved filename" = "Use window title in saved filename";
 "Hide menu bar icon" = "Hide menu bar icon";
 "Hotkeys still work. To show the icon again, re-launch macshot." = "Hotkeys still work. To show the icon again, re-launch macshot.";
+"Show menu bar icon" = "Show menu bar icon";
+"Hotkeys still work when the menu bar icon is hidden." = "Hotkeys still work when the menu bar icon is hidden.";
 "Check for updates automatically" = "Check for updates automatically";
 "Check for beta updates" = "Check for beta updates";
 "Thumbnail" = "Thumbnail";

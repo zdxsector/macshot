@@ -57,7 +57,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
     private var historyUnlimitedCheckbox: NSButton!
     private var thumbnailScaleLabel: NSTextField!
     private var launchAtLoginCheckbox: NSButton!
-    private var hideMenuBarIconCheckbox: NSButton!
+    private var showMenuBarIconCheckbox: NSButton!
     private var historySizeField: NSTextField!
     private var historySizeStepper: NSStepper!
     private var snapGuidesCheckbox: NSButton!
@@ -397,14 +397,14 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         stack.addArrangedSubview(indented(launchAtLoginCheckbox))
         stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
 
-        hideMenuBarIconCheckbox = NSButton(checkboxWithTitle: L("Hide menu bar icon"), target: self, action: #selector(hideMenuBarIconChanged(_:)))
-        stack.addArrangedSubview(indented(hideMenuBarIconCheckbox))
+        showMenuBarIconCheckbox = NSButton(checkboxWithTitle: L("Show menu bar icon"), target: self, action: #selector(showMenuBarIconChanged(_:)))
+        stack.addArrangedSubview(indented(showMenuBarIconCheckbox))
         stack.setCustomSpacing(4, after: stack.arrangedSubviews.last!)
 
-        let hideNote = NSTextField(wrappingLabelWithString: L("Hotkeys still work. To show the icon again, re-launch macshot."))
-        hideNote.font = NSFont.systemFont(ofSize: 10)
-        hideNote.textColor = .secondaryLabelColor
-        stack.addArrangedSubview(indented(hideNote))
+        let menuBarIconNote = NSTextField(wrappingLabelWithString: L("Hotkeys still work when the menu bar icon is hidden."))
+        menuBarIconNote.font = NSFont.systemFont(ofSize: 10)
+        menuBarIconNote.textColor = .secondaryLabelColor
+        stack.addArrangedSubview(indented(menuBarIconNote))
         stack.setCustomSpacing(6, after: stack.arrangedSubviews.last!)
 
         let urlSchemeCheckbox = NSButton(checkboxWithTitle: L("Enable macshot:// URL scheme"), target: self, action: #selector(urlSchemeChanged(_:)))
@@ -2112,7 +2112,7 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         let launchAtLogin = UserDefaults.standard.bool(forKey: "launchAtLogin")
         launchAtLoginCheckbox.state = launchAtLogin ? .on : .off
 
-        hideMenuBarIconCheckbox.state = UserDefaults.standard.bool(forKey: "hideMenuBarIcon") ? .on : .off
+        showMenuBarIconCheckbox.state = UserDefaults.standard.bool(forKey: "hideMenuBarIcon") ? .off : .on
 
         let snapGuides = UserDefaults.standard.object(forKey: "snapGuidesEnabled") as? Bool ?? true
         snapGuidesCheckbox.state = snapGuides ? .on : .off
@@ -2688,10 +2688,10 @@ class SettingsWindowController: NSWindowController, NSToolbarDelegate, NSWindowD
         urlSchemeInfoPopover = popover
     }
 
-    @objc private func hideMenuBarIconChanged(_ sender: NSButton) {
-        let hidden = sender.state == .on
-        UserDefaults.standard.set(hidden, forKey: "hideMenuBarIcon")
-        (NSApp.delegate as? AppDelegate)?.setMenuBarIconVisible(!hidden)
+    @objc private func showMenuBarIconChanged(_ sender: NSButton) {
+        let visible = sender.state == .on
+        UserDefaults.standard.set(!visible, forKey: "hideMenuBarIcon")
+        (NSApp.delegate as? AppDelegate)?.setMenuBarIconVisible(visible)
     }
 
     @objc private func autoUpdateChanged(_ sender: NSButton) {
